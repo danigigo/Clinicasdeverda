@@ -1,4 +1,4 @@
-import Doctor from '../models/Doctor.js';
+import  Doctor  from '../models/Doctor.js';
 import bcrypt from 'bcrypt';
 
 const generateUniqueToken = async () => {
@@ -21,32 +21,35 @@ const cdoctores = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const token = await generateUniqueToken();
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const existingDoctor = await Doctor.findOne({ email });
 
-        const doctorData = {
-            ...req.body,
-            password: hashedPassword,
-            token: token
-        };
+        if (existingDoctor) {
+            const passwordMatch = await bcrypt.compare(password, existingDoctor.password);
 
-        const doctor = new Doctor(doctorData);
-        await doctor.save();
+            if (passwordMatch) {
+                return res.status(400).json({ mensaje: 'El usuario ya está registrado en la base de datos y las contraseñas coinciden' });
+            } else {
+                return res.status(400).json({ mensaje: 'El usuario ya está registrado en la base de datos pero las contraseñas no coinciden' });
+            }
+        }
 
-        res.json({ mensaje: 'Registrando un nuevo doctor', token: token });
+        const token = await generateUniqueToken(); // Generar un token único
+        const doctor = new Doctor({ ...req.body, token }); // Agregar el token al nuevo doctor
+        await doctor.save(); 
 
+        res.json({ mensaje: 'Registrando un nuevo doctor', token });
     } catch (error) {
         console.error(error);
         res.status(500).json({ mensaje: 'Hubo un error' });
     }
 };
 
-const loginDoctor = (req, res) => {
-    res.send('ruta de inicio de sesión');
+const loginDoctor = (req, res)=> {
+    res.send({msg:"desde la ruta /api/doctores"});
 };
 
-const perfil = (req, res) => {
-    res.json({ mensaje: "ruta de perfil de usuario" });
+const perfil = (req, res)=> {
+    res.json({msg:"desde la ruta /api/doctores/perfil"});
 };
 
 export { cdoctores, loginDoctor, perfil };
