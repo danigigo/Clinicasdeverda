@@ -1,37 +1,52 @@
 import Doctor from '../models/Doctor.js';
 import bcrypt from 'bcrypt';
 
-const cdoctores = async (req, res) => {
-  try {
-    const { email , password} = req.body;
-    let doctor = await Doctor.findOne({ email });
-    if (doctor) {
-      return res.status(400).json({ mensaje: 'El usuario ya está registrado' });
+const generateUniqueToken = async () => {
+    let token;
+    let tokenExists = true;
+
+    while (tokenExists) {
+        token = Math.floor(Math.random() * 900000) + 100000; // Números de 6 dígitos
+        const existingDoctor = await Doctor.findOne({ token });
+
+        if (!existingDoctor) {
+            tokenExists = false;
+        }
     }
-     // Hashear la contraseña proporcionada
-     const hashedPassword = await bcrypt.hash(password, 10); 
-    
-     // Comparar la contraseña hasheada con la proporcionada
-     const passwordMatch = await bcrypt.compare(password, hashedPassword);
-     if (!passwordMatch) {
-       return res.status(400).json({ mensaje: 'La contraseña proporcionada no coincide' });
-     }
-     const response = { mensaje: 'Registrando un nuevo doctor', coinciden: 'Las contraseñas coinciden' };
 
-    doctor = new Doctor(req.body);
-    await doctor.save();
-    res.json(response);
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Hubo un error' });
-  }
+    return token.toString();
 };
+
+const cdoctores = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const token = await generateUniqueToken();
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const doctorData = {
+            ...req.body,
+            password: hashedPassword,
+            token: token
+        };
+
+        const doctor = new Doctor(doctorData);
+        await doctor.save();
+
+        res.json({ mensaje: 'Registrando un nuevo doctor', token: token });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensaje: 'Hubo un error' });
+    }
+};
+
 const loginDoctor = (req, res) => {
-  res.send('ruta de inicio de sesión');
+    res.send('ruta de inicio de sesión');
 };
-const perfil = (req, res) => {
-  res.json({mensaje:" ruta de perfil de usuario"});
-};
-export {cdoctores,loginDoctor,perfil}
 
+const perfil = (req, res) => {
+    res.json({ mensaje: "ruta de perfil de usuario" });
+};
+
+export { cdoctores, loginDoctor, perfil };
