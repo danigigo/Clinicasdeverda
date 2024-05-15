@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro y Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap">
+</head>
+<body>
+    <div class="background"></div>
+    <div class="container">
+        <h1>Bienvenido al hospitalweb 🏥</h1>
+        <div class="form-container" id="login-container">
+            <h2>Iniciar Sesión</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">✉️ Email</label>
+                    <input type="email" id="login-email" name="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">🔒 Contraseña</label>
+                    <input type="password" id="login-password" name="login-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-role">Rol</label>
+                    <select id="login-role" name="login-role" required>
+                        <option value="doctor">Doctor 👨‍⚕️</option>
+                        <option value="paciente">Paciente 🤒</option>
+                    </select>
+                </div>
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+            <p><br>No tiene una cuenta creada? <button class="switch-button green-button small-button" id="show-register">Cree una aquí</button></p>
+        </div>
+        <div class="form-container" id="register-container" style="display:none;">
+            <h2>Registrarse</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="nombre">👤 Nombre</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">✉️ Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">🔒 Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">🔒 Repetir Contraseña</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="celular">📱 Celular</label>
+                    <input type="text" id="celular" name="celular" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Rol</label>
+                    <select id="role" name="role" required>
+                        <option value="doctor">Doctor 👨‍⚕️</option>
+                        <option value="paciente">Paciente 🤒</option>
+                    </select>
+                </div>
+                <button type="submit">Crear Cuenta</button>
+            </form>
+            <p><br>¿Ya tiene una cuenta creada? <button class="switch-button green-button small-button" id="show-login">Inicie sesión aquí</button></p>
+        </div>
+    </div><br>
+    <script src="scripts.js"></script>
+</body>
+</html>
