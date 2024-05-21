@@ -6,7 +6,7 @@ const generateUniqueToken = async () => {
     let tokenExists = true;
 
     while (tokenExists) {
-        token = Math.floor(Math.random() * 900000) + 100000;
+        token = Math.floor(Math.random() * 900000) + 100000; // Números de 6 dígitos
         const existingPaciente = await Paciente.findOne({ token });
 
         if (!existingPaciente) {
@@ -17,9 +17,9 @@ const generateUniqueToken = async () => {
     return token.toString();
 };
 
-const registrarPaciente = async (req, res) => {
+const crearpacientes = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { nombre, email, password, celular, role } = req.body;
 
         const existingPaciente = await Paciente.findOne({ email });
 
@@ -27,14 +27,14 @@ const registrarPaciente = async (req, res) => {
             const passwordMatch = await bcrypt.compare(password, existingPaciente.password);
 
             if (passwordMatch) {
-                return res.status(400).json({ mensaje: 'El paciente ya está registrado en la base de datos y las contraseñas coinciden' });
+                return res.status(400).json({ mensaje: 'El usuario ya está registrado en la base de datos y las contraseñas coinciden' });
             } else {
-                return res.status(400).json({ mensaje: 'El paciente ya está registrado en la base de datos pero las contraseñas no coinciden' });
+                return res.status(400).json({ mensaje: 'El usuario ya está registrado en la base de datos pero las contraseñas no coinciden' });
             }
         }
 
-        const token = await generateUniqueToken();
-        const paciente = new Paciente({ ...req.body, token });
+        const token = await generateUniqueToken(); // Generar un token único
+        const paciente = new Paciente({ ...req.body, token }); // Agregar el token al nuevo paciente
         await paciente.save(); 
 
         res.json({ mensaje: 'Registrando un nuevo paciente', token });
@@ -44,12 +44,33 @@ const registrarPaciente = async (req, res) => {
     }
 };
 
-const loginPaciente = (req, res)=> {
-    res.send({msg:"desde la ruta /api/pacientes/login"});
+const loginPaciente = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Buscar el paciente por correo electrónico
+        const paciente = await Paciente.findOne({ email });
+
+        if (!paciente) {
+            return res.status(400).json({ mensaje: 'El paciente no existe' });
+        }
+
+        // Verificar la contraseña
+        const passwordMatch = await bcrypt.compare(password, paciente.password);
+
+        if (!passwordMatch) {
+            return res.status(400).json({ mensaje: 'Contraseña incorrecta' });
+        }
+
+        res.json({ mensaje: 'Inicio de sesión exitoso' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensaje: 'Hubo un error al iniciar sesión' });
+    }
 };
 
-const perfilPaciente = (req, res)=> {
-    res.json({msg:"desde la ruta /api/pacientes/perfil"});
+const perfilPaciente = (req, res) => {
+    res.json({ msg: "desde la ruta /api/pacientes/perfil" });
 };
 
-export { registrarPaciente, loginPaciente, perfilPaciente };
+export { crearpacientes, loginPaciente, perfilPaciente };

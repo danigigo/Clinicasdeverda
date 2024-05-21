@@ -27,7 +27,7 @@ const pacienteSchema = new mongoose.Schema({
     },
     confirmado : {
         type: Boolean,
-        default: false
+        default: true
     },
 });
 

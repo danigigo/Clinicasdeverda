@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
-        const celular = document.getElementById('celular').value;
+        const Celular = document.getElementById('celular').value;
         const role = document.getElementById('role').value;
 
         if (password !== confirmPassword) {
@@ -42,19 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const data = { nombre, email, password, celular };
+        const data = { nombre, email, password, Celular };
 
         try {
-            const response = await fetch(`http://localhost:4000/${role === 'doctor' ? 'doctores' : 'pacientes'}/registrar`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-            alert(result.mensaje || 'Registro exitoso');
+            let response;
+            if (role === 'doctor') {
+                response = await axios.post('http://localhost:4000/doctores/registrardoc', data);
+            } else {
+                response = await axios.post('http://localhost:4000/pacientes/registrar', data);
+            }
+            alert(response.data.mensaje || 'Registro exitoso');
         } catch (error) {
             console.error('Error:', error);
             alert('Hubo un error al registrar');
@@ -70,16 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = { email, password };
 
         try {
-            const response = await fetch(`http://localhost:4000/${role === 'doctor' ? 'doctores' : 'pacientes'}/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-            alert(result.msg || 'Login exitoso');
+            let response;
+            if (role === 'doctor') {
+                response = await axios.post('http://localhost:4000/doctores/login', data);
+            } else {
+                response = await axios.post('http://localhost:4000/pacientes/login', data);
+            }
+            alert(response.data.mensaje || 'Login exitoso');
         } catch (error) {
             console.error('Error:', error);
             alert('Hubo un error al iniciar sesión');

@@ -1,4 +1,5 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
+
 const conectarDB = async () => {
     try {
         const db = await mongoose.connect(process.env.MONGO_URI, {
@@ -11,5 +12,6 @@ const conectarDB = async () => {
         console.log(`error: ${error.message}`);
         process.exit(1);
     }
-}
+};
+
 export default conectarDB;
