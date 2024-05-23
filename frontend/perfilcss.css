@@ -1,0 +1,22 @@
+/* Asegúrate de que el fondo ocupe toda la pantalla y se ajuste correctamente */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Poetsen One', sans-serif;
+    background: url('fondaso.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+}
+
+h1 {
+    color: rgb(6, 127, 57);
+    font-size: 3em;
+    margin: 0;
+}

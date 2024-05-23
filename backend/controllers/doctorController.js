@@ -44,7 +44,7 @@ const cdoctores = async (req, res) => {
     }
 };
 
-const loginDoctor = async (req, res) => {
+const login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -52,7 +52,7 @@ const loginDoctor = async (req, res) => {
         const doctor = await Doctor.findOne({ email });
 
         if (!doctor) {
-            return res.status(400).json({ mensaje: 'El doctor no existe' });
+            return res.status(400).json({ mensaje: 'El doctor no existe xd' });
         }
 
         // Verificar la contraseña
@@ -62,15 +62,15 @@ const loginDoctor = async (req, res) => {
             return res.status(400).json({ mensaje: 'Contraseña incorrecta' });
         }
 
-        res.json({ mensaje: 'Inicio de sesión exitoso' });
+        res.json({ mensaje: 'Inicio de sesión exitoso', nombre: doctor.nombre });
     } catch (error) {
         console.error(error);
         res.status(500).json({ mensaje: 'Hubo un error al iniciar sesión' });
     }
 };
 
-const perfilDoctor = (req, res) => {
+const perfil = (req, res) => {
     res.json({ msg: "desde la ruta /api/doctores/perfil" });
 };
 
-export { cdoctores, loginDoctor, perfilDoctor };
+export { cdoctores, login, perfil };

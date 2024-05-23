@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Doctor</title>
+    <link rel="stylesheet" href="perfilcss.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap">
+</head>
+<body>
+    <div class="container">
+        <h1 id="welcome-message">Bienvenido, Doctor <span id="nombre"></span></h1>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const nombre = params.get('nombre');
+            document.getElementById('nombre').textContent = nombre;
+        });
+    </script>
+</body>
+</html>

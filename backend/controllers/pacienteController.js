@@ -44,7 +44,7 @@ const crearpacientes = async (req, res) => {
     }
 };
 
-const loginPaciente = async (req, res) => {
+const login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -62,15 +62,15 @@ const loginPaciente = async (req, res) => {
             return res.status(400).json({ mensaje: 'Contraseña incorrecta' });
         }
 
-        res.json({ mensaje: 'Inicio de sesión exitoso' });
+        res.json({ mensaje: 'Inicio de sesión exitoso', nombre: paciente.nombre });
     } catch (error) {
         console.error(error);
         res.status(500).json({ mensaje: 'Hubo un error al iniciar sesión' });
     }
 };
 
-const perfilPaciente = (req, res) => {
+const perfil = (req, res) => {
     res.json({ msg: "desde la ruta /api/pacientes/perfil" });
 };
 
-export { crearpacientes, loginPaciente, perfilPaciente };
+export { crearpacientes, login, perfil };

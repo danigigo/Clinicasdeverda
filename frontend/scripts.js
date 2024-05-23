@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
-        const Celular = document.getElementById('celular').value;
+        const celular = document.getElementById('celular').value;
         const role = document.getElementById('role').value;
 
         if (password !== confirmPassword) {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const data = { nombre, email, password, Celular };
+        const data = { nombre, email, password, celular };
 
         try {
             let response;
@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 response = await axios.post('http://localhost:4000/pacientes/registrar', data);
             }
             alert(response.data.mensaje || 'Registro exitoso');
+            // Recarga la página después del registro exitoso
+            location.reload();
         } catch (error) {
             console.error('Error:', error);
             alert('Hubo un error al registrar');
@@ -59,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     loginForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
+        event.preventDefault(); 
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
         const role = document.getElementById('login-role').value;
@@ -70,10 +72,19 @@ document.addEventListener('DOMContentLoaded', () => {
             let response;
             if (role === 'doctor') {
                 response = await axios.post('http://localhost:4000/doctores/login', data);
+                if (response.data.mensaje === 'Inicio de sesión exitoso') {
+                    const nombre = response.data.nombre ? response.data.nombre : '';
+                    alert(`Bienvenido, Doctor ${nombre}`);
+                    window.location.href = `perfildoc.html?nombre=${nombre}`;
+                }
             } else {
                 response = await axios.post('http://localhost:4000/pacientes/login', data);
+                if (response.data.mensaje === 'Inicio de sesión exitoso') {
+                    const nombre = response.data.nombre ? response.data.nombre : '';
+                    alert(`Bienvenido, Paciente ${nombre}`);
+                    window.location.href = `perfilpac.html?nombre=${nombre}`;
+                }
             }
-            alert(response.data.mensaje || 'Login exitoso');
         } catch (error) {
             console.error('Error:', error);
             alert('Hubo un error al iniciar sesión');

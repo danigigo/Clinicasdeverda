@@ -1,10 +1,10 @@
 import express from 'express';
-import { cdoctores, loginDoctor, perfilDoctor } from '../controllers/doctorController.js';
+import { cdoctores, login, perfil } from '../controllers/doctorController.js';
 
 const router = express.Router();
 
 router.post('/registrardoc', cdoctores);
-router.post('/login', loginDoctor);
-router.get('/perfil', perfilDoctor);
+router.post('/login', login);
+router.get('/perfil', perfil);
 
 export default router;
