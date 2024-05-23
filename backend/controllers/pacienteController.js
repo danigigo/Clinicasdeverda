@@ -74,3 +74,4 @@ const perfil = (req, res) => {
 };
 
 export { crearpacientes, login, perfil };
+    
